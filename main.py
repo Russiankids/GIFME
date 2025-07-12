@@ -65,14 +65,8 @@ class VideoConverterWorker(QThread):
                 command = [
                     'ffmpeg',
                     '-i', input_path,
-                    '-filter_complex',
-                    '[0:v] fps=12,scale=320:-1:force_original_aspect_ratio=decrease:flags=lanczos,'
-                    'pad=320:-1:(ow-iw)/2:(oh-ih)/2,split [a][b];'
-                    '[a] palettegen=max_colors=128:stats_mode=diff [p];'
-                    '[b] setpts=PTS*1.25 [b_slow];'
-                    '[b_slow][p] paletteuse=dither=sierra2_4a',
-                    '-an',
-                    '-y',
+                    '-vf', 'fps=10,scale=320:-1:flags=lanczos',
+                    '-y',  # Overwrite output file if it exists
                     output_path
                 ]
                 # Execute the command, capture output for debugging if needed
